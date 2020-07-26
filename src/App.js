@@ -1,26 +1,62 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, Fragment } from 'react';
 
-function App() {
+import PostMessage from './postMessage'
+import './App.css';
+const mqtt = require('mqtt');
+var options = {
+	// clientId uniquely identifies client
+	// choose any string you wish
+	clientId: 'b0908853'
+};
+
+const client  = mqtt.connect('ws://127.0.0.1:9001', options);
+client.subscribe('#');
+
+class App extends React.Component {
+state={messages:[]}
+  constructor () {
+   super();
+   this.handleSendMessage = this.handleSendMessage.bind(this);
+   this.handleMessageReceive = this.handleMessageReceive.bind(this);
+}
+componentDidMount() {
+  client.on('message',this.handleMessageReceive);
+}
+handleMessageReceive = (topic,message)=>{
+  var msg = [topic.toString(),message.toString()];
+  this.setState(prevState => ({messages: [...prevState.messages, msg]}))
+
+  //this.state.mesg=message;
+}
+handleSendMessage = (topic,message)=>{
+  console.log("sending " + topic +":"+message);
+  client.publish(topic,message);
+
+}
+render() {
+
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <PostMessage sendMessage={this.handleSendMessage}/>
+
+         <p>The message is: {this.state.mesg}</p>
+
+
+           <ul>
+             {this.state.messages.map((item,index) => (
+               <li key={"li"+index}>
+                {item[0]}: {item[1]}
+               </li>
+             ))}
+           </ul>
+
+
       </header>
     </div>
   );
+}
 }
 
 export default App;
