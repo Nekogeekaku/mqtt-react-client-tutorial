@@ -1,5 +1,30 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## React mqtt tutorial
+
+This project will explain:
+- how to setup a mosquitto MQTT broker on you computer <br />
+- setup and use the react client <br />
+
+Already available:
+- a functional client react app that connect to a local mqtt broker
+
+Coming next week-end:
+- Explanation on how to setup Mosquitto on premise or using docker with websocket support (and tips)
+- improvement of the client
+
+Coming later:
+- a full walkthrough for the client
+- trying to integrate promises on the mqtt component (someone tried it)
+- setup the mqtt as a component to be of easy use for your own projects
+
+
+
+
+
+## React documentation
+
+
 ## Available Scripts
 
 In the project directory, you can run:
